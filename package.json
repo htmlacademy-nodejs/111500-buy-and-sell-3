@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./src/service/service.js",
     "test": "npm run eslint",
-    "eslint": "eslint --ext .js src/"
+    "eslint": "eslint --ext .js src/",
+    "eslint-fix": "eslint --ext .js src/ --fix"
   },
   "repository": {
     "type": "git",
