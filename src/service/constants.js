@@ -1,6 +1,6 @@
 'use strict';
 
-const DEFAULT_COUNT = 1;
+const DEFAULT_NUMBER = 1;
 const MAX_COUNT = 1000;
 const SENTENCES_IN_DESCRIPTION_MAX = 5;
 const PICTURE_NUMBER_MIN = 1;
@@ -64,7 +64,7 @@ const typeList = [
 
 module.exports = {
   helpText,
-  DEFAULT_COUNT,
+  DEFAULT_NUMBER,
   MAX_COUNT,
   titleList,
   PICTURE_NUMBER_MIN,

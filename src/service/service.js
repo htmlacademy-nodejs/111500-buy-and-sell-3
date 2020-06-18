@@ -1,19 +1,50 @@
 'use strict';
 
-const version = require(`../../package.json`).version;
-const constants = require(`./constants`);
 const fs = require(`fs`);
+const {version} = require(`../../package.json`);
+const constants = require(`./constants`);
+const {getRandomNumber} = require(`./utils`);
 
-const argv = process.argv;
+// const argv = process.argv;
+const [commandName = ``, commandValue = null] = process.argv.slice(2);
 
-const hasHelpArg = !!argv.find((i) => i === `--help`);
-const hasVersionArg = !!argv.find((i) => i === `--version`);
-const generateArgIndex = argv.indexOf(`--generate`);
+const runCommand = (name, value) => {
+  switch (name) {
+    case `--generate`:
+      generateOffer(value);
+      break;
+    case `--version`:
+      showVersion();
+      break;
+    default:
+      showHelp();
+  }
+};
 
-const getRandomNumber = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max); // not including
-  return Math.floor(Math.random() * (max - min)) + min;
+const showHelp = () => {
+  console.log(constants.helpText);
+};
+
+const showVersion = () => {
+  console.log(`v${version}`);
+};
+
+const generateOffer = (value) => {
+  const objectInArrayNumber = Number.parseInt(value, 10) || constants.DEFAULT_NUMBER;
+  if (objectInArrayNumber > constants.MAX_COUNT) {
+    console.log(`Не больше 1000 объявлений`);
+    process.exit(1);
+  }
+  const resultArray = [];
+  for (let i = 0; i < objectInArrayNumber; i++) {
+    resultArray.push(generateMockedObject());
+  }
+  fs.writeFile(`./mock.json`, JSON.stringify(resultArray), (err) => {
+    if (err) {
+      process.exit(1);
+    }
+    process.exit(0);
+  });
 };
 
 const randomSliceArray = (arrayName, maxLength) => {
@@ -33,30 +64,4 @@ const generateMockedObject = () => {
   };
 };
 
-if (generateArgIndex >= 0) {
-  const resultArray = [];
-  let generateArgValue = argv[generateArgIndex + 1];
-  if (!generateArgValue || typeof generateArgValue !== `number`) {
-    generateArgValue = constants.DEFAULT_COUNT;
-  }
-  if (generateArgValue > constants.MAX_COUNT) {
-    console.log(`Не больше 1000 объявлений`)
-    process.exit(1);
-  }
-  for (let i = 0; i < generateArgValue; i++) {
-    resultArray.push(generateMockedObject());
-  }
-  fs.writeFile(`./mock.json`, JSON.stringify(resultArray), (err) => {
-    if (err) {
-      process.exit(1);
-    }
-    process.exit(0);
-  });
-}
-
-if (hasHelpArg) {
-  console.log(constants.helpText);
-}
-if (hasVersionArg) {
-  console.log(`v${version}`);
-}
+runCommand(commandName, commandValue);
