@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require(`fs`);
+const {writeFile} = require(`fs`).promises;
 const util = require(`util`);
 
 const chalk = require(`chalk`);
@@ -9,13 +9,12 @@ const {version} = require(`../../package.json`);
 const constants = require(`./constants`);
 const {getRandomNumber} = require(`./utils`);
 
-const writeFile = util.promisify(fs.writeFile);
 const [commandName = ``, commandValue = null] = process.argv.slice(2);
 
-const runCommand = (name, value) => {
+const runCommand = async (name, value) => {
   switch (name) {
     case `--generate`:
-      generateOffer(value);
+      await generateOffer(value);
       break;
     case `--version`:
       showVersion();
