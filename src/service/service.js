@@ -1,7 +1,6 @@
 'use strict';
 
-const {writeFile} = require(`fs`).promises;
-const util = require(`util`);
+const {writeFile, readFile} = require(`fs`).promises;
 
 const chalk = require(`chalk`);
 
@@ -40,7 +39,7 @@ const generateOffer = async (value) => {
   }
   const resultArray = [];
   for (let i = 0; i < objectInArrayNumber; i++) {
-    resultArray.push(generateMockedObject());
+    resultArray.push(await generateMockedObject());
   }
   try {
     await writeFile(`./mock.json`, JSON.stringify(resultArray));
@@ -52,20 +51,27 @@ const generateOffer = async (value) => {
   process.exit(0);
 };
 
-const randomSliceArray = (arrayName, maxLength) => {
-  const start = getRandomNumber(0, constants[arrayName].length - 1);
-  const end = getRandomNumber(start + 1, maxLength ? start + 1 + maxLength : constants[arrayName].length);
-  return constants[arrayName].slice(start, end);
+const getArrayFromFile = async (path) => {
+  const list = await readFile(__dirname + path, 'utf8')
+  return list.split('\n')
+}
+
+const randomSliceArray = async (pathToFile, maxLength) => {
+  const list = await getArrayFromFile(pathToFile)
+  const start = getRandomNumber(0, list.length - 1);
+  const end = getRandomNumber(start + 1, maxLength ? start + 1 + maxLength : list.length);
+  return list.slice(start, end);
 };
 
-const generateMockedObject = () => {
+const generateMockedObject = async () => {
+  const titleList = await getArrayFromFile(`/../../data/titles.txt`);
   return {
-    title: constants.titleList[getRandomNumber(0, constants.titleList.length)],
+    title: titleList[getRandomNumber(0, titleList.length)],
     picture: `item${getRandomNumber(constants.PICTURE_NUMBER_MIN, constants.PICTURE_NUMBER_MAX)}.jpg`,
-    description: randomSliceArray(`descriptionList`, constants.SENTENCES_IN_DESCRIPTION_MAX),
+    description: await randomSliceArray(`/../../data/sentences.txt`, constants.SENTENCES_IN_DESCRIPTION_MAX),
     type: constants.typeList[getRandomNumber(0, constants.typeList.length)],
     sum: getRandomNumber(constants.SUM_MIN, constants.SUM_MAX),
-    category: randomSliceArray(`categoryList`)
+    category: await randomSliceArray(`/../../data/categories.txt`)
   };
 };
 if (!module.parent) {
