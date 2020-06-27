@@ -52,12 +52,12 @@ const generateOffer = async (value) => {
 };
 
 const getArrayFromFile = async (path) => {
-  const list = await readFile(__dirname + path, 'utf8')
-  return list.split('\n')
-}
+  const list = await readFile(__dirname + path, `utf8`);
+  return list.split(`\n`);
+};
 
 const randomSliceArray = async (pathToFile, maxLength) => {
-  const list = await getArrayFromFile(pathToFile)
+  const list = await getArrayFromFile(pathToFile);
   const start = getRandomNumber(0, list.length - 1);
   const end = getRandomNumber(start + 1, maxLength ? start + 1 + maxLength : list.length);
   return list.slice(start, end);
