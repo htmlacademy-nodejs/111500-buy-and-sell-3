@@ -1,6 +1,7 @@
 'use strict';
 
 const {writeFile, readFile} = require(`fs`).promises;
+const os = require('os');
 
 const chalk = require(`chalk`);
 
@@ -53,7 +54,7 @@ const generateOffer = async (value) => {
 
 const getArrayFromFile = async (path) => {
   const list = await readFile(__dirname + path, `utf8`);
-  return list.split(`\n`);
+  return list.split(os.EOL);
 };
 
 const randomSliceArray = async (pathToFile, maxLength) => {
