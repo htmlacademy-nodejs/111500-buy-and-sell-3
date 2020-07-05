@@ -1,7 +1,8 @@
 'use strict';
 
 const {writeFile, readFile} = require(`fs`).promises;
-const os = require('os');
+const os = require(`os`);
+const http = require(`http`);
 
 const chalk = require(`chalk`);
 
@@ -19,6 +20,9 @@ const runCommand = async (name, value) => {
     case `--version`:
       showVersion();
       break;
+    case `--server`:
+      runServer(value);
+      break;
     default:
       showHelp();
   }
@@ -30,6 +34,45 @@ const showHelp = () => {
 
 const showVersion = () => {
   console.log(chalk.blue(`v${version}`));
+};
+
+const runServer = (userPort) => {
+  const port = userPort || constants.DEFAULT_PORT;
+  const httpServer = http.createServer(onClientConnect);
+  httpServer.listen(port, (err) => {
+    if (err) {
+      console.error(chalk.red(`Ошибка при создании сервера`));
+    }
+    console.log(`Слушаю на порту ${port}`);
+  });
+
+};
+
+const onClientConnect = async (request, response) => {
+  switch (request.url) {
+    case `/`:
+      let postList;
+      try {
+        postList = JSON.parse(await readFile(__dirname + `/mock.json`, `utf8`));
+      } catch (e) {
+        if (e && e.code === `ENOENT`) {
+          response.writeHead(constants.HTTP_NOT_FOUND_CODE, {
+            'Content-Type': `text/plain; charset=UTF-8`
+          });
+          response.end(`Not found`);
+          return;
+        }
+        console.log(chalk.red(e));
+      }
+      let titlesInLi = ``;
+      postList.forEach((post) => {
+        titlesInLi += `<li>${post.title}</li>`;
+      });
+      response.writeHead(constants.HTTP_OK_CODE, {
+        'Content-Type': `text/html; charset=UTF-8`
+      });
+      response.end(`<ul>${titlesInLi}</ul>`);
+  }
 };
 
 const generateOffer = async (value) => {
@@ -54,7 +97,7 @@ const generateOffer = async (value) => {
 
 const getArrayFromFile = async (path) => {
   const list = await readFile(__dirname + path, `utf8`);
-  return list.split(os.EOL);
+  return list.split(os.EOL).filter((i) => i);
 };
 
 const randomSliceArray = async (pathToFile, maxLength) => {

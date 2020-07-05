@@ -7,6 +7,9 @@ const PICTURE_NUMBER_MIN = 1;
 const PICTURE_NUMBER_MAX = 16;
 const SUM_MIN = 1000;
 const SUM_MAX = 100000;
+const DEFAULT_PORT = 3000;
+const HTTP_NOT_FOUND_CODE = 404;
+const HTTP_OK_CODE = 200;
 
 const helpText = `Программа запускает http-сервер и формирует файл с данными для API.
 
@@ -32,5 +35,8 @@ module.exports = {
   SENTENCES_IN_DESCRIPTION_MAX,
   SUM_MIN,
   SUM_MAX,
-  typeList
+  typeList,
+  DEFAULT_PORT,
+  HTTP_NOT_FOUND_CODE,
+  HTTP_OK_CODE,
 };
