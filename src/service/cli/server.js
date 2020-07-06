@@ -2,6 +2,7 @@
 
 const {readFile} = require(`fs`).promises;
 const http = require(`http`);
+const path = require(`path`);
 
 const chalk = require(`chalk`);
 
@@ -24,9 +25,9 @@ const runServer = (userPort) => {
 const onClientConnect = async (request, response) => {
   switch (request.url) {
     case `/`:
-      let postList;
       try {
-        postList = JSON.parse(await readFile(__dirname + `/../mock.json`, `utf8`));
+        const titlesInLi = await getPostTitles();
+        responseOk(response, `<ul>${titlesInLi}</ul>`);
       } catch (e) {
         if (e && e.code === `ENOENT`) {
           responseNotFound(response);
@@ -35,12 +36,14 @@ const onClientConnect = async (request, response) => {
         console.log(chalk.red(e));
         responseUnknownError(response);
       }
-      let titlesInLi = ``;
-      postList.forEach((post) => {
-        titlesInLi += `<li>${post.title}</li>`;
-      });
-      responseOk(response, `<ul>${titlesInLi}</ul>`);
   }
+};
+
+const getPostTitles = async () => {
+  const postList = JSON.parse(await readFile(path.resolve(__dirname, `../mock.json`), `utf8`));
+  return postList.reduce((accum, currentValue) => {
+    return accum + `<li>${currentValue.title}</li>`;
+  }, ``);
 };
 
 const responseNotFound = (response) => {

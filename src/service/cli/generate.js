@@ -2,6 +2,7 @@
 
 const {writeFile, readFile} = require(`fs`).promises;
 const os = require(`os`);
+const path = require(`path`);
 
 const chalk = require(`chalk`);
 
@@ -18,6 +19,7 @@ const typeList = [
   `offer`,
   `sale`
 ];
+const TEXTS_FOLDER = `../../data`;
 
 const generateOffer = async (value) => {
   const objectsInArrayNumber = Number.parseInt(value, 10) || DEFAULT_OBJECTS_NUMBER;
@@ -30,7 +32,7 @@ const generateOffer = async (value) => {
     resultArray.push(await generateMockedObject());
   }
   try {
-    await writeFile(`./mock.json`, JSON.stringify(resultArray));
+    await writeFile(path.resolve(`./mock.json`), JSON.stringify(resultArray));
   } catch (e) {
     console.log(chalk.red(`Ошибка: ${e}`));
     process.exit(1);
@@ -40,26 +42,26 @@ const generateOffer = async (value) => {
 };
 
 const generateMockedObject = async () => {
-  const titleList = await getArrayFromFile(`/../../../data/titles.txt`);
+  const titleList = await getArrayFromFile(`titles.txt`);
   return {
     title: titleList[getRandomNumber(0, titleList.length)],
     picture: `item${getRandomNumber(PICTURE_NUMBER_MIN, PICTURE_NUMBER_MAX)}.jpg`,
-    description: await randomSliceArray(`/../../../data/sentences.txt`, SENTENCES_IN_DESCRIPTION_MAX),
+    description: await randomSliceArray(`sentences.txt`, SENTENCES_IN_DESCRIPTION_MAX),
     type: typeList[getRandomNumber(0, typeList.length)],
     sum: getRandomNumber(SUM_MIN, SUM_MAX),
-    category: await randomSliceArray(`/../../../data/categories.txt`)
+    category: await randomSliceArray(`categories.txt`)
   };
 };
 
-const randomSliceArray = async (pathToFile, maxLength) => {
-  const list = await getArrayFromFile(pathToFile);
+const randomSliceArray = async (fileName, maxLength) => {
+  const list = await getArrayFromFile(fileName);
   const start = getRandomNumber(0, list.length - 1);
   const end = getRandomNumber(start + 1, maxLength ? start + 1 + maxLength : list.length);
   return list.slice(start, end);
 };
 
-const getArrayFromFile = async (path) => {
-  const list = await readFile(__dirname + path, `utf8`);
+const getArrayFromFile = async (fileName) => {
+  const list = await readFile(path.resolve(`${TEXTS_FOLDER}/`, fileName), `utf8`);
   return list.split(os.EOL).filter((i) => i);
 };
 
