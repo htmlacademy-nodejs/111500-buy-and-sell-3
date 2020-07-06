@@ -36,6 +36,9 @@ const onClientConnect = async (request, response) => {
         console.log(chalk.red(e));
         responseUnknownError(response);
       }
+      break;
+    default:
+      responseNotFound(response);
   }
 };
 
