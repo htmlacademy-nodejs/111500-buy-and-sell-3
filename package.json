@@ -4,6 +4,7 @@
   "description": "Куплю. Продам",
   "main": "./src/service/service.js",
   "scripts": {
+    "server": "nodemon ./src/service/service.js --server 3000",
     "start": "node ./src/service/service.js",
     "test": "npm run eslint",
     "eslint": "eslint --ext .js src/",
@@ -21,7 +22,8 @@
   "homepage": "https://github.com/astatsegre/111500-buy-and-sell-3#readme",
   "devDependencies": {
     "eslint": "7.2.0",
-    "eslint-config-htmlacademy": "0.5.2"
+    "eslint-config-htmlacademy": "0.5.2",
+    "nodemon": "2.0.4"
   },
   "dependencies": {
     "chalk": "4.1.0"
