@@ -17,15 +17,17 @@ app.use(express.json());
 app.get(`/offers`, async (req, res) => {
   try {
     const fileContent = await readFile(path.resolve(__dirname, `../mock.json`), `utf8`);
+    if (!fileContent) {
+      return res.json([]);
+    }
     const mocks = JSON.parse(fileContent);
-    res.json(mocks);
+    return res.json(mocks);
   } catch (e) {
     if (e && e.code === `ENOENT`) {
-      res.json([]);
-      return;
+      return res.json([]);
     }
     console.log(chalk.red(e));
-    res.status(HTTP_SERVER_ERROR).send(e);
+    return res.status(HTTP_SERVER_ERROR).send(e);
   }
 });
 
