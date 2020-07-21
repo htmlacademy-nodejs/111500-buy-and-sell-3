@@ -6,7 +6,7 @@ const path = require(`path`);
 
 const chalk = require(`chalk`);
 
-const {getRandomNumber} = require(`../utils`);
+const {getRandomNumber, PATH_TO_MOCKS} = require(`../utils`);
 
 const DEFAULT_OBJECTS_NUMBER = 1;
 const MAX_COUNT = 1000;
@@ -32,7 +32,7 @@ const generateOffer = async (value) => {
     resultArray.push(await generateMockedObject());
   }
   try {
-    await writeFile(path.resolve(`./mock.json`), JSON.stringify(resultArray));
+    await writeFile(PATH_TO_MOCKS, JSON.stringify(resultArray));
   } catch (e) {
     console.log(chalk.red(`Ошибка: ${e}`));
     process.exit(1);
