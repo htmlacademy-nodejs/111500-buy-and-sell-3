@@ -3,9 +3,9 @@
 const express = require(`express`);
 
 const routes = require(`../api`);
+const {HTTP_CODE} = require(`../constants`);
 
 const DEFAULT_PORT = 3000;
-const HTTP_NOT_FOUND_CODE = 404;
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(`/api`, routes);
 
 app.use((req, res) => {
-  res.status(HTTP_NOT_FOUND_CODE).send(`Not found`);
+  res.status(HTTP_CODE.NOT_FOUND).send(`Not found`);
 });
 
 const runServer = (userPort) => {
