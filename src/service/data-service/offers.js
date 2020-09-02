@@ -25,20 +25,7 @@ class OffersService {
   }
 
   delete(id) {
-    let isDeleted = false;
-    this._offers = this._offers.filter((i) => {
-      if (i.id === id) {
-        isDeleted = true;
-        return false;
-      }
-      return true;
-    });
-    return isDeleted;
-  }
-
-  getComments(offerId) {
-    const offer = this._offers.find((i) => i.id === offerId);
-    return offer ? offer.comments : null;
+    this._offers = this._offers.filter((i) => i.id === id);
   }
 }
 
