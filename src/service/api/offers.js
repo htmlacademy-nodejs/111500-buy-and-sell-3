@@ -4,6 +4,7 @@ const {Router} = require(`express`);
 
 const {HTTP_CODE} = require(`../constants`);
 const offerValidator = require(`../middlewares/offer-validator`);
+const commentValidator = require(`../middlewares/comment-validator`);
 const offerExists = require(`../middlewares/offer-exists`);
 const commentsService = require(`../data-service/comments`);
 
@@ -45,6 +46,11 @@ module.exports = (app, offerService) => {
     const {commentId} = req.params;
     const deletedComment = commentsService.delete(offer, commentId);
     res.status(HTTP_CODE.OK).json(deletedComment);
+  });
+  offersRouter.post(`/:offerId/comments`, [offerExists(offerService), commentValidator], async (req, res) => {
+    const {offer} = res.locals;
+    const createdComment = commentsService.create(offer, req.body);
+    res.status(HTTP_CODE.CREATED).json(createdComment);
   });
 };
 
