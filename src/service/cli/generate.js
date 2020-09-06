@@ -1,13 +1,12 @@
 'use strict';
 
-const {writeFile, readFile} = require(`fs`).promises;
-const os = require(`os`);
-const path = require(`path`);
+const {writeFile} = require(`fs`).promises;
 
 const chalk = require(`chalk`);
 const {nanoid} = require(`nanoid`);
 
-const {getRandomNumber, PATH_TO_MOCKS} = require(`../utils`);
+const {getRandomNumber, getArrayFromFile} = require(`../utils`);
+const {PATH_TO_MOCKS} = require(`../constants`);
 
 const DEFAULT_OBJECTS_NUMBER = 1;
 const MAX_COUNT = 1000;
@@ -20,7 +19,6 @@ const typeList = [
   `offer`,
   `sale`
 ];
-const TEXTS_FOLDER = `../../../data`;
 
 const generateOffer = async (value) => {
   const objectsInArrayNumber = Number.parseInt(value, 10) || DEFAULT_OBJECTS_NUMBER;
@@ -61,11 +59,6 @@ const randomSliceArray = async (fileName, maxLength) => {
   const start = getRandomNumber(0, list.length - 1);
   const end = getRandomNumber(start + 1, maxLength ? start + 1 + maxLength : list.length);
   return list.slice(start, end);
-};
-
-const getArrayFromFile = async (fileName) => {
-  const list = await readFile(path.resolve(__dirname, `${TEXTS_FOLDER}/`, fileName), `utf8`);
-  return list.split(os.EOL).filter((i) => i);
 };
 
 const getComments = async (commentsNumber = 1) => {

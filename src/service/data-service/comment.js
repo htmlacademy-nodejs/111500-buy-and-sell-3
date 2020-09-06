@@ -2,7 +2,7 @@
 
 const {nanoid} = require(`nanoid`);
 
-class CommentsService {
+class CommentService {
 
   getAll(offer) {
     return offer.comments;
@@ -23,4 +23,4 @@ class CommentsService {
   }
 }
 
-module.exports = CommentsService;
+module.exports = CommentService;

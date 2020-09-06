@@ -2,7 +2,7 @@
 
 const {HTTP_CODE} = require(`../constants`);
 
-const requiredKeys = [`id`, `text`];
+const requiredKeys = [`text`];
 
 module.exports = (req, res, next) => {
   const userCommentKeys = Object.keys(req.body);
