@@ -16,9 +16,9 @@ const app = new Router();
 (async () => {
   const mockedData = await getMockedData();
   const mockedCategoryList = await getMockedCategoryList();
-  offersRouter(app, new OfferService(mockedData), new CommentService());
-  categoryRouter(app, new CategoryService(mockedCategoryList));
-  searchRouter(app, new SearchService(mockedData));
+  app.use(`/offers`, offersRouter(new OfferService(mockedData), new CommentService()));
+  app.use(`/categories`, categoryRouter(new CategoryService(mockedCategoryList)));
+  app.use(`/search`, searchRouter(new SearchService(mockedData)));
 })();
 
 module.exports = app;

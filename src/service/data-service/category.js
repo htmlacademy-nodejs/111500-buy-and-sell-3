@@ -1,12 +1,12 @@
 'use strict';
 
 class CategoryService {
-  constructor(categoryList) {
-    this._categoryList = categoryList;
+  constructor(categories) {
+    this._categories = categories;
   }
 
   getAll() {
-    return this._categoryList;
+    return this._categories;
   }
 }
 

@@ -7,10 +7,8 @@ const offerValidator = require(`../middlewares/offer-validator`);
 const commentValidator = require(`../middlewares/comment-validator`);
 const offerExists = require(`../middlewares/offer-exists`);
 
-const offersRouter = new Router();
-
-module.exports = (app, offerService, commentService) => {
-  app.use(`/offers`, offersRouter);
+module.exports = (offerService, commentService) => {
+  const offersRouter = new Router();
 
   offersRouter.get(`/`, async (req, res) => {
     const offers = offerService.getAll();
@@ -51,6 +49,8 @@ module.exports = (app, offerService, commentService) => {
     const createdComment = commentService.create(offer, req.body);
     res.status(HTTP_CODE.CREATED).json(createdComment);
   });
+
+  return offersRouter;
 };
 
 

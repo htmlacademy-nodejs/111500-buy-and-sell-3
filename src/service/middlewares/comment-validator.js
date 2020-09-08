@@ -6,7 +6,7 @@ const requiredKeys = [`text`];
 
 module.exports = (req, res, next) => {
   const userCommentKeys = Object.keys(req.body);
-  const isValidComment = requiredKeys.every((i) => userCommentKeys.includes(i));
+  const isValidComment = requiredKeys.every((key) => userCommentKeys.includes(key));
   if (!isValidComment) {
     res.status(HTTP_CODE.BAD_REQUEST);
   }

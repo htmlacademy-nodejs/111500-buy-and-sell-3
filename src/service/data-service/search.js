@@ -2,11 +2,11 @@
 
 class SearchService {
   constructor(offerList) {
-    this._offerList = offerList;
+    this._offers = offerList;
   }
 
   find(query) {
-    return this._offerList.filter((i) => i.title.toLowerCase().includes(query.toLowerCase()));
+    return this._offers.filter((offer) => offer.title.toLowerCase().includes(query.toLowerCase()));
   }
 
 }
