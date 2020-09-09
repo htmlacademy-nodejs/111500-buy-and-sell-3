@@ -1,8 +1,11 @@
 'use strict';
 
 const path = require(`path`);
+const {readFile} = require(`fs`).promises;
+const os = require(`os`);
 
-const PATH_TO_MOCKS = path.resolve(__dirname, `../../mock.json`);
+const {TEXTS_FOLDER} = require(`./constants`);
+
 
 const getRandomNumber = (min, max) => {
   min = Math.ceil(min);
@@ -10,4 +13,9 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-module.exports = {getRandomNumber, PATH_TO_MOCKS};
+const getArrayFromFile = async (fileName) => {
+  const list = await readFile(path.resolve(__dirname, `${TEXTS_FOLDER}/`, fileName), `utf8`);
+  return list.split(os.EOL).filter((i) => i);
+};
+
+module.exports = {getRandomNumber, getArrayFromFile};
