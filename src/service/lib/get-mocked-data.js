@@ -2,8 +2,6 @@
 
 const {readFile} = require(`fs`).promises;
 
-const chalk = require(`chalk`);
-
 const {PATH_TO_MOCKS, CATEGORY_FILE} = require(`../constants`);
 const {getArrayFromFile} = require(`../utils`);
 const logger = require(`./logger`).getLogger({name: `api`});

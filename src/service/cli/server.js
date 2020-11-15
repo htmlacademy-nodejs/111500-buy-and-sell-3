@@ -15,12 +15,12 @@ const runServer = async (userPort) => {
 
   app.use(express.json());
   app.use((req, res, next) => {
-    logger.debug(`Request ${req.url}`)
+    logger.debug(`Request ${req.url}`);
     res.on(`finish`, () => {
-      logger.info(`Status code ${res.statusCode}`)
-    })
-    next()
-  })
+      logger.info(`Status code ${res.statusCode}`);
+    });
+    next();
+  });
   app.use(`/api`, await getRoutes());
 
   app.use((req, res) => {
