@@ -6,6 +6,7 @@ const chalk = require(`chalk`);
 
 const {PATH_TO_MOCKS, CATEGORY_FILE} = require(`../constants`);
 const {getArrayFromFile} = require(`../utils`);
+const logger = require(`./logger`).getLogger({name: `api`});
 
 let data = [];
 let categoryList = [];
@@ -21,7 +22,7 @@ const getMockedData = async () => {
     }
     data = JSON.parse(fileContent);
   } catch (e) {
-    console.log(chalk.red(e));
+    logger.error(e.message);
     return Promise.reject(e);
   }
 
@@ -35,7 +36,7 @@ const getMockedCategoryList = async () => {
   try {
     categoryList = getArrayFromFile(CATEGORY_FILE);
   } catch (e) {
-    console.log(chalk.red(e));
+    logger.error(e.message);
     return Promise.reject(e);
   }
   return categoryList;
