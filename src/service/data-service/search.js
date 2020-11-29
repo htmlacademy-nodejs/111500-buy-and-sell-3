@@ -5,7 +5,7 @@ class SearchService {
     this._offers = offerList;
   }
 
-  find(query) {
+  find(query = ``) {
     return this._offers.filter((offer) => offer.title.toLowerCase().includes(query.toLowerCase()));
   }
 
