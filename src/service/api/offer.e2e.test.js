@@ -1,22 +1,17 @@
 'use strict';
 
 const request = require(`supertest`);
-const express = require(`express`);
-const offerRouter = require(`./offer`);
-const OfferService = require(`../data-service/offer`);
-const CommentService = require(`../data-service/comment`);
+const getApp = require(`./index`)
 
 const mockedData = [{"id": `HZRwwwHNZg18XCETAo4WS`, "title": `Отдам в хорошие руки подшивку «Мурзилка».`, "picture": `item1.jpg`, "description": `Кажется, что это хрупкая вещь. Мой дед не мог её сломать. Кому нужен этот новый телефон, если тут такое...`, "type": `offer`, "sum": 19242, "category": [`Ноутбуки`], "comments": [{"id": `eTcxy-ovct2ZzA_TAc9TX`, "text": `Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}, {"id": `EcjjHjppkixExbBQt1ttu`, "text": `А сколько игр в комплекте? Совсем немного... С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого`}, {"id": `N4vMfxBejrkwJuaVXFxUz`, "text": `С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого Оплата наличными или перевод на карту?`}, {"id": `yrci7Og--MbUXS0_P4JLE`, "text": `Почему в таком ужасном состоянии?`}, {"id": `H_E7KaRKxd_XNc42eJNtG`, "text": `Оплата наличными или перевод на карту? Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}, {"id": `tTLpObrA7WRZ8B5B5YTJN`, "text": `Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого`}, {"id": `LFEJXyJQDHDtkHYbZ0-p3`, "text": `Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле.`}, {"id": `vamu49ZkMkoeCNWbmu7sL`, "text": `А сколько игр в комплекте? Совсем немного... С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}]}, {"id": `wdIiNDisGEcKbsBnwC4kB`, "title": `Отдам ножки для стола Икеа.`, "picture": `item1.jpg`, "description": `Таких предложений больше нет! Две страницы заляпаны свежим кофе.`, "type": `sale`, "sum": 78395, "category": [`Игры`, `Животные`, `Журналы`, `Вентиляторы`], "comments": [{"id": `MnoyWruGkmKd9dd2ZmXVA`, "text": `Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}, {"id": `QbnSbyWSyCmDvD4wllHlU`, "text": `А сколько игр в комплекте? Совсем немного... С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого`}, {"id": `p33O2D7Am-qOFy2Tl3b-t`, "text": `Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле.`}, {"id": `E-sBTmy2_fS7cMUnJwMg2`, "text": `Совсем немного...`}, {"id": `atdU8AMKGouledFcpxltA`, "text": `Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле.`}]}, {"id": `UI4tXi5TSJi1KCHqPfn61`, "title": `Продам отличную подборку фильмов на VHS.`, "picture": `item1.jpg`, "description": `Пользовались бережно и только по большим праздникам., Продаю с болью в сердце...`, "type": `offer`, "sum": 26359, "category": [`Журналы`, `Вентиляторы`, `Ноутбуки`, `Аксессуары`], "comments": [{"id": `mi704W8B4aJfxU-jx_hLu`, "text": `Почему в таком ужасном состоянии?`}, {"id": `gpNBVpHvq4GHmlvnA2XYt`, "text": `С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле.`}, {"id": `6FCWXAhzdkA-JhsqZ9Vck`, "text": `С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого Оплата наличными или перевод на карту?`}, {"id": `bEj1nWkywRXOXykrqKUsy`, "text": `Оплата наличными или перевод на карту?`}, {"id": `5czcAMJsPQjIe7ZO74x2G`, "text": `Оплата наличными или перевод на карту? Вы что?! В магазине дешевле.`}, {"id": `osPBGzyEnzqr_6gN3HcfE`, "text": `Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}, {"id": `VWAPMfAcfiBC23i1Q6nVM`, "text": `Вы что?! В магазине дешевле.`}, {"id": `ba4HiOTUH30Kpaq7FKxbs`, "text": `Совсем немного...`}, {"id": `SnVyxrS5rNZ_oC_IZz-WC`, "text": `Совсем немного... С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца.`}]}];
 const mockedNewOffer = {"title": `Отдам в хорошие руки подшивку «Мурзилка».`, "picture": `item1.jpg`, "description": `Кажется, что это хрупкая вещь. Мой дед не мог её сломать. Кому нужен этот новый телефон, если тут такое...`, "type": `offer`, "sum": 19242, "category": [`Ноутбуки`], "comments": [{"id": `eTcxy-ovct2ZzA_TAc9TX`, "text": `Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}, {"id": `EcjjHjppkixExbBQt1ttu`, "text": `А сколько игр в комплекте? Совсем немного... С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого`}, {"id": `N4vMfxBejrkwJuaVXFxUz`, "text": `С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого Оплата наличными или перевод на карту?`}, {"id": `yrci7Og--MbUXS0_P4JLE`, "text": `Почему в таком ужасном состоянии?`}, {"id": `H_E7KaRKxd_XNc42eJNtG`, "text": `Оплата наличными или перевод на карту? Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}, {"id": `tTLpObrA7WRZ8B5B5YTJN`, "text": `Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого`}, {"id": `LFEJXyJQDHDtkHYbZ0-p3`, "text": `Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле.`}, {"id": `vamu49ZkMkoeCNWbmu7sL`, "text": `А сколько игр в комплекте? Совсем немного... С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}]};
 const updatedOffer = {"title": `Отдам в хорошие руки подшивку «Мурзилка».`, "picture": `item25.png`, "description": `Кажется, что это хрупкая вещь. Мой дед не мог её сломать. Кому нужен этот новый телефон, если тут такое...`, "type": `offer`, "sum": 10, "category": [`Ноутбуки`], "comments": [{"id": `eTcxy-ovct2ZzA_TAc9TX`, "text": `Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}, {"id": `EcjjHjppkixExbBQt1ttu`, "text": `А сколько игр в комплекте? Совсем немного... С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого`}, {"id": `N4vMfxBejrkwJuaVXFxUz`, "text": `С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого Оплата наличными или перевод на карту?`}, {"id": `yrci7Og--MbUXS0_P4JLE`, "text": `Почему в таком ужасном состоянии?`}, {"id": `H_E7KaRKxd_XNc42eJNtG`, "text": `Оплата наличными или перевод на карту? Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}, {"id": `tTLpObrA7WRZ8B5B5YTJN`, "text": `Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого`}, {"id": `LFEJXyJQDHDtkHYbZ0-p3`, "text": `Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле.`}, {"id": `vamu49ZkMkoeCNWbmu7sL`, "text": `А сколько игр в комплекте? Совсем немного... С чем связана продажа? Почему так дешёво? Продаю в связи с переездом. Отрываю от сердца. Неплохо, но дорого Оплата наличными или перевод на карту? Вы что?! В магазине дешевле. Почему в таком ужасном состоянии?`}]};
-const app = express();
-app.use(express.json());
-app.use(`/offers`, offerRouter(new OfferService(mockedData), new CommentService()));
+const app = getApp(mockedData);
 describe(`Returns offer list`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .get(`/offers`);
+      .get(`/api/offers`);
   });
 
   test(`Status code should be 200`, async () => {
@@ -36,7 +31,7 @@ describe(`Returns single offer with certain id`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .get(`/offers/HZRwwwHNZg18XCETAo4WS`);
+      .get(`/api/offers/HZRwwwHNZg18XCETAo4WS`);
   });
 
   test(`Status code should be 200`, async () => {
@@ -56,7 +51,7 @@ describe(`Can't find offer`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .get(`/offers/HZ4WS`);
+      .get(`/api/offers/HZ4WS`);
   });
 
   test(`Status code should be 404`, async () => {
@@ -73,7 +68,7 @@ describe(`Creates new offer`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .post(`/offers`)
+      .post(`/api/offers`)
       .send(mockedNewOffer);
   });
 
@@ -94,7 +89,7 @@ describe(`Updates offer`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .put(`/offers/HZRwwwHNZg18XCETAo4WS`)
+      .put(`/api/offers/HZRwwwHNZg18XCETAo4WS`)
       .send(updatedOffer);
   });
 
@@ -119,7 +114,7 @@ describe(`Can't update offer, because not all props provided`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .put(`/offers/HZRwwwHNZg18XCETAo4WS`)
+      .put(`/api/offers/HZRwwwHNZg18XCETAo4WS`)
       .send({"sum": 10});
   });
 
@@ -136,7 +131,7 @@ describe(`Deletes offer`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .delete(`/offers/HZRwwwHNZg18XCETAo4WS`);
+      .delete(`/api/offers/HZRwwwHNZg18XCETAo4WS`);
   });
 
   test(`Status code should be 200`, async () => {
@@ -156,7 +151,7 @@ describe(`Can't delete offer, because it doesn't exist`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .delete(`/offers/HZTAo4WS`);
+      .delete(`/api/offers/HZTAo4WS`);
   });
 
   test(`Status code should be 404`, async () => {
@@ -172,7 +167,7 @@ describe(`Returns comments`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .get(`/offers/HZRwwwHNZg18XCETAo4WS/comments`);
+      .get(`/api/offers/HZRwwwHNZg18XCETAo4WS/comments`);
   });
 
   test(`Status code should be 200`, async () => {
@@ -192,7 +187,7 @@ describe(`Deletes comment`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .delete(`/offers/HZRwwwHNZg18XCETAo4WS/comments/eTcxy-ovct2ZzA_TAc9TX`);
+      .delete(`/api/offers/HZRwwwHNZg18XCETAo4WS/comments/eTcxy-ovct2ZzA_TAc9TX`);
   });
 
   test(`Status code should be 200`, async () => {
@@ -208,7 +203,7 @@ describe(`Adds new comment`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .post(`/offers/HZRwwwHNZg18XCETAo4WS/comments`)
+      .post(`/api/offers/HZRwwwHNZg18XCETAo4WS/comments`)
       .send({"text": `new comment`});
   });
 

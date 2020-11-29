@@ -1,20 +1,17 @@
 'use strict';
 
 const request = require(`supertest`);
-const express = require(`express`);
-const categoryRouter = require(`./category`);
-const CategoryService = require(`../data-service/category`);
+
+const getApp = require(`./index`)
 
 const mockedData = [`Книги`, `Разное`, `Посуда`, `Игры`, `Животные`, `Журналы`, `Вентиляторы`, `Ноутбуки`, `Аксессуары`, `Смартфоны`];
 
-const app = express();
-app.use(express.json());
-app.use(`/categories`, categoryRouter(new CategoryService(mockedData)));
+const app = getApp([], mockedData);
 describe(`API returns category list`, () => {
   let response;
   beforeAll(async () => {
     response = await request(app)
-      .get(`/categories`);
+      .get(`/api/categories`);
   });
 
   test(`Status code should be 200`, async () => {
