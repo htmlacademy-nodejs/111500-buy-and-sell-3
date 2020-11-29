@@ -2,7 +2,7 @@
 
 const request = require(`supertest`);
 
-const getApp = require(`./index`)
+const getApp = require(`./index`);
 
 const mockedData = [`Книги`, `Разное`, `Посуда`, `Игры`, `Животные`, `Журналы`, `Вентиляторы`, `Ноутбуки`, `Аксессуары`, `Смартфоны`];
 
