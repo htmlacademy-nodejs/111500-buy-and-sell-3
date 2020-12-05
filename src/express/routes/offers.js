@@ -47,6 +47,10 @@ offersRouter.get(`/edit/:id`, async (req, res) => {
   const [categories, offer] = await Promise.all([CategoryApi.getCategories(), OfferApi.getOneOffer(id)]);
   res.render(`ticket/ticket-edit`, {categories: categories.data, _offer: offer.data});
 });
-offersRouter.get(`/:id`, (req, res) => res.send(req.originalUrl));
+offersRouter.get(`/:id`, async (req, res) => {
+  const {id} = req.params;
+  const {data} = await OfferApi.getOneOffer(id)
+  res.render(`ticket/ticket`, {oneOffer: data})
+});
 
 module.exports = offersRouter;

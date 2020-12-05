@@ -6,7 +6,7 @@ block content
       h2.visually-hidden Самые новые предложения
       .tickets-list__wrapper
         .tickets-list__header
-          a.tickets-list__btn.btn.btn--big(href='#')
+          a.tickets-list__btn.btn.btn--big(href='/offers/add')
             span Новая публикация
         ul
           each offer in _offers
@@ -20,7 +20,7 @@ block content
                     a(href='#') #{offer.category}
                   .ticket-card__header
                     h3.ticket-card__title
-                      a(href='#') #{offer.title}
+                      a(href=`/offers/${offer.id}`) #{offer.title}
                     p.ticket-card__price
                       span.js-sum #{offer.sum}
                       |  ₽
