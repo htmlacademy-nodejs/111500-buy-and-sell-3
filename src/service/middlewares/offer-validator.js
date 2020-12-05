@@ -2,7 +2,7 @@
 
 const {HTTP_CODE} = require(`../constants`);
 
-const offerKeys = [`category`, `description`, `picture`, `title`, `type`, `sum`, `comments`];
+const offerKeys = [`category`, `description`, `picture`, `title`, `type`, `sum`];
 
 module.exports = (req, res, next) => {
   const userOfferKeys = Object.keys(req.body);

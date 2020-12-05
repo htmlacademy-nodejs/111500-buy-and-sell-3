@@ -16,3 +16,6 @@ build/
 
 # Моки
 mock.json
+
+# загруженные файлы
+src/express/upload

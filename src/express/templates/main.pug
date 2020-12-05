@@ -1,7 +1,27 @@
 extends ./common/layout
+
 block content
   main.page-content
-    .message
-      .message__text
-        p На сайте еще не опубликовано ни одного объявления.
-      a.message__link.btn.btn--big(href='#') Вход и регистрация
+    section.tickets-list
+      h2.visually-hidden Самые новые предложения
+      .tickets-list__wrapper
+        .tickets-list__header
+          a.tickets-list__btn.btn.btn--big(href='/offers/add')
+            span Новая публикация
+        ul
+          each offer in _offers
+            li.tickets-list__item.js-card
+              .ticket-card.ticket-card--color06
+                .ticket-card__img
+                  img(src=`img/${offer.picture}` srcset=`img/${offer.picture}@2x.jpg 2x` alt=offer.title)
+                .ticket-card__info
+                  span.ticket-card__label #{offer.type === `offer` ? `Продам` : `Куплю`}
+                  .ticket-card__categories
+                    a(href='#') #{offer.category}
+                  .ticket-card__header
+                    h3.ticket-card__title
+                      a(href=`/offers/${offer.id}`) #{offer.title}
+                    p.ticket-card__price
+                      span.js-sum #{offer.sum}
+                      |  ₽
+                button.ticket-card__del.js-delete(type='button') Удалить

@@ -45,7 +45,7 @@ const generateMockedObject = async () => {
   return {
     id: nanoid(),
     title: titleList[getRandomNumber(0, titleList.length)],
-    picture: `item${getRandomNumber(PICTURE_NUMBER_MIN, PICTURE_NUMBER_MAX)}.jpg`,
+    picture: `item${getRandomNumber(PICTURE_NUMBER_MIN, PICTURE_NUMBER_MAX).toString().padStart(2, 0)}.jpg`,
     description: await getDescription(SENTENCES_IN_DESCRIPTION_MAX),
     type: typeList[getRandomNumber(0, typeList.length)],
     sum: getRandomNumber(SUM_MIN, SUM_MAX),
