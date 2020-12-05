@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
   const userCommentKeys = Object.keys(req.body);
   const isValidComment = requiredKeys.every((key) => userCommentKeys.includes(key));
   if (!isValidComment) {
-    res.status(HTTP_CODE.BAD_REQUEST);
+    return res.status(HTTP_CODE.BAD_REQUEST);
   }
-  next();
+  return next();
 };

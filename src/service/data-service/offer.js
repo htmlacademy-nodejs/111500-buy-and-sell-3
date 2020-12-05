@@ -15,7 +15,9 @@ class OffersService {
   }
 
   create(offer) {
-    this._offers.push(Object.assign(offer, {id: nanoid()}));
+    const newOffer = Object.assign(offer, {id: nanoid()});
+    this._offers.push(newOffer);
+    return newOffer;
   }
 
   update(id, fieldsToUpdate) {
